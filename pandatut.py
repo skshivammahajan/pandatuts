@@ -133,13 +133,13 @@ df.loc['k'] = [1, 'Suresh', 'yes', 15.5]
 print("\nDelete the new row and display the original  rows:")
 df = df.drop('k')
 
-print("Sort the data frame first by ‘name’ in descending order, then by ‘score’ in ascending order:")
+print("Sort the data frame first by 'name' in descending order, then by 'score' in ascending order:")
 df.sort_values(by=['name', 'score'], ascending=[False, True])
 
-print("\nReplace the ‘qualify' column contains the values 'yes' and 'no'  with True and  False:")
+print("\nReplace the 'qualify' column contains the values 'yes' and 'no'  with True and  False:")
 df['qualify'] = df['qualify'].map({'yes': True, 'no': False})
 
-print("\nChange the name 'James' to ‘Suresh’:")
+print("\nChange the name 'James' to 'Suresh':")
 df['name'] = df['name'].replace('James', 'Suresh')
 
 print("\nDelete the 'attempts' column from the data frame:")
@@ -155,3 +155,22 @@ exam_data = [{'name':'Anastasia', 'score':12.5}, {'name':'Dima','score':9}, {'na
 df = pd.DataFrame(exam_data)
 for index, row in df.iterrows():
     print(row['name'], row['score'])
+
+# Common Excel Tasks Demonstrated in Pandas
+df = pd.read_excel("excel-comp-data.xlsx")
+df.head()
+
+# Adding sales of Jan, Feb and March to get total Sale for each row
+df["total"] = df["Jan"] + df["Feb"] + df["Mar"]
+df.head()
+
+# column level analysis 
+print(df["Jan"].sum(), df["Jan"].mean(),df["Jan"].min(),df["Jan"].max())
+
+sum_row=df[["Jan","Feb","Mar","total"]].sum()
+df_sum=pd.DataFrame(data=sum_row).T
+df_sum=df_sum.reindex(columns=df.columns)
+df_final=df.append(df_sum,ignore_index=True)
+df_final.tail()
+
+
