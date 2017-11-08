@@ -174,3 +174,36 @@ df_final=df.append(df_sum,ignore_index=True)
 df_final.tail()
 
 
+# filter values of a column of all females who are not graduate and got a loan
+data.loc[(data["Gender"]=="Female") & (data["Education"]=="Not Graduate") & (data["Loan_Status"]=="Y"), ["Gender","Education","Loan_Status"]]
+
+#Create a new function:
+def num_missing(x):
+  return sum(x.isnull())
+
+#Applying per column:
+print "Missing values per column:"
+print data.apply(num_missing, axis=0) #axis=0 defines that function is to be applied on each column
+
+#Applying per row:
+print "\nMissing values per row:"
+print data.apply(num_missing, axis=1).head() #axis=1 defines that function is to be applied on each row
+
+# updating missing values with the overall mean/mode/median of the colum
+#First we import a function to determine the mode
+from scipy.stats import mode
+mode(data['Gender'])
+
+# Output: ModeResult(mode=array([‘Male’], dtype=object), count=array([489]))
+# This returns both mode and count.There can be multiple values with high frequency. We will take the first one by default always using:
+mode(data['Gender']).mode[0]
+# 'Male
+
+#  fill the missing values 
+#Impute the values:
+data['Gender'].fillna(mode(data['Gender']).mode[0], inplace=True)
+data['Married'].fillna(mode(data['Married']).mode[0], inplace=True)
+data['Self_Employed'].fillna(mode(data['Self_Employed']).mode[0], inplace=True)
+
+#Now check the #missing values again to confirm:
+print data.apply(num_missing, axis=0)
