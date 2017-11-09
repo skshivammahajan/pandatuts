@@ -39,3 +39,17 @@ print(df['BP*SO2'])
 writer = ExcelWriter('Pandas-Example-Out.xlsx')
 df.to_excel(writer,'Sheet1',index=False)
 writer.save()
+
+
+# Adding New Sheet to Eisting Excel File
+import pandas
+from openpyxl import load_workbook
+
+book = load_workbook('Masterfile.xlsx')
+writer = pandas.ExcelWriter('Masterfile.xlsx', engine='openpyxl') 
+writer.book = book
+writer.sheets = dict((ws.title, ws) for ws in book.worksheets)
+#  Essentially these steps are just loading the existing data from 'Masterfile.xlsx' and populating your writer with them.
+
+data.to_excel(writer, "Testsheetname", cols=['Diff1', 'Diff2'])
+writer.save()
